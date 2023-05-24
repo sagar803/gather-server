@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import http from 'http'
 import { Server } from 'socket.io'
+import path from 'path'
 
 const app = express();
 
@@ -10,6 +11,10 @@ const io = new Server(server, {
     cors:{
         origin : 'https://quickchat.netlify.app'
     }
+})
+
+app.get("/", (req ,res) => {
+    res.sendFile(path.join(__dirname, 'index.html'))
 })
 
 io.on("connection" , (socket)=> {
