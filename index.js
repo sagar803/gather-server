@@ -27,7 +27,12 @@ io.on("connection" , (socket)=> {
 
     socket.on("join_room" , (data) => {
         socket.join(data.room);
+        socket.to(data.room).emit("joined_room", data)
         console.log(data.userName, 'joined room:',  data.room);
+    })
+    socket.on("leave_room" , (data) => {
+        socket.to(data.room).emit("left_room", data)
+        console.log(data.userName, 'left room:',  data.room);
     })
     socket.on("send_message", (data) => {
         socket.to(data.room).emit("recieve_message", data)
