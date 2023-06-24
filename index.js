@@ -9,6 +9,7 @@ import path from 'path';
 import bodyParser from 'body-parser'
 
 import authRoutes from './routes/auth.js';
+import roomRoutes from './routes/room.js';
 
 const app = express();
 dotenv.config();
@@ -31,6 +32,7 @@ app.get("/", (req ,res) => {
     res.sendFile(path.join(__dirname, 'index.html'))
 })
 app.use("/auth", authRoutes);
+app.use("/api", roomRoutes);
 
 io.on("connection" , (socket)=> {
     console.log("User Connected:" , socket.id)

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Room from "../models/Room.js";
 
 /* REGISTER USER */
 export const register = async (req, res) => {
@@ -20,7 +21,8 @@ export const register = async (req, res) => {
       password: passwordHash
     });
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    const rooms = await Room.find();
+    res.status(201).json({ user:savedUser, rooms});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -37,7 +39,9 @@ export const login = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     delete user.password;
-    res.status(200).json({ token, user });
+    const rooms = await Room.find();
+    console.log(rooms)
+    res.status(200).json({ token, user, rooms});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
