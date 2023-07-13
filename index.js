@@ -44,6 +44,7 @@ io.on("connection" , (socket)=> {
     })
     socket.on("leave_room" , (data) => {
         socket.to(data.room).emit("left_room", data)
+        socket.leave(data.room);
         console.log(data.userName, 'left room:',  data.room);
     })
     socket.on("send_message", (data) => {
