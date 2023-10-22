@@ -10,9 +10,15 @@ const roomSchema = new mongoose.Schema({
   description:{
     type: String,
   },
+  isPrivate: {
+    type: Boolean,
+    default: true,
+  },
   password: {
     type: String,
-    min: 5,
+    required: function() {
+      return this.isPrivate;
+    }
   },
   customId: {
     type: String,
@@ -24,10 +30,6 @@ const roomSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  },
-  isPublic: {
-    type: Boolean,
-    default: true,
   },
   members: [{
     type: mongoose.Schema.Types.ObjectId,
