@@ -2,7 +2,7 @@ import Room from "../models/Room.js";
 
 export const createRoom = async (req, res) => {
     try {
-      const { name, customId, createdBy, type, members, category, description, isActive } = req.body;
+      const { name, customId, createdBy, type, members, category, description, isActive , password, isPrivate} = req.body;
       const room = new Room({
         name,
         description,
@@ -11,8 +11,14 @@ export const createRoom = async (req, res) => {
         type,
         members,
         category,
+        isActive,
+        isPrivate,
       });
+      if (isPrivate)  room.password = password;
+
       const createdRoom = await room.save();
+//      delete createdRoom.password;
+
       res.status(201).json(createdRoom);
     } catch (error) {
       console.error('Error creating room', error);

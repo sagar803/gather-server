@@ -8,9 +8,8 @@ export const getMessages = async (req, res) => {
 
         if (!room) return res.status(404).send({ error: 'Room not found' });
         const messages = await Message.find({ roomId: roomId });
-        if (!messages || messages.length === 0) return res.status(404).send({ error: 'Messages not found for the specified room' });
-
-        console.log(messages);
+        if (!messages || messages.length === 0) return res.status(204).send({ Message: 'Messages not found for the specified room' });
+        
         // Send the messages as the response
         res.status(200).send(messages);
     } catch (error) {
