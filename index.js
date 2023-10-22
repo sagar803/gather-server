@@ -6,10 +6,11 @@ import { Server } from 'socket.io'
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import path from 'path';
-import bodyParser from 'body-parser'
 
 import authRoutes from './routes/auth.js';
 import roomRoutes from './routes/room.js';
+import messageRoutes from './routes/message.js'
+import Message from './models/Message.js'
 
 const app = express();
 dotenv.config();
@@ -28,11 +29,11 @@ const io = new Server(server, {
 })
 
 
-app.get("/", (req ,res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
-})
+app.get("/", (req ,res) => { res.sendFile(path.join(__dirname, 'index.html'))})
 app.use("/auth", authRoutes);
 app.use("/api", roomRoutes);
+app.use("/messages", messageRoutes);
+
 
 io.on("connection" , (socket)=> {
     console.log("User Connected:" , socket.id)
@@ -47,7 +48,16 @@ io.on("connection" , (socket)=> {
         socket.leave(data.room);
         console.log(data.userName, 'left room:',  data.room);
     })
-    socket.on("send_message", (data) => {
+    socket.on("send_message", async (data) => {
+        console.log(data)
+        const newMessage = new Message({
+            content : data.content, 
+            senderId: data.senderId,
+            senderName: data.senderName, 
+            roomId: data.roomId, 
+            type: 'text'
+        })
+        await newMessage.save();
         socket.to(data.room).emit("recieve_message", data)
     })
     socket.on('disconnect', () => {
