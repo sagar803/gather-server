@@ -1,6 +1,6 @@
 import Room from "../models/Room.js";
 
-export const createRoom = async (req, res) => {
+  export const createRoom = async (req, res) => {
     try {
       const { name, customId, createdBy, type, members, category, description, isActive , password, isPrivate} = req.body;
       const room = new Room({

@@ -3,10 +3,6 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const messageSchema = new Schema({
-  content: {
-    type: String,
-    required: true,
-  },
   senderName: {
     type: String
   },
@@ -28,7 +24,21 @@ const messageSchema = new Schema({
     type: String,
     enum: ['text', 'image', 'file', 'system'],
     default: 'text',
-  }
+  },
+  content: {
+    type: String,
+  },
+  imageUrl: {
+    type: String, // For image messages
+  },
+  audioUrl: {
+      type: String, // For audio messages
+  },
+  chatType: {
+    type: String,
+    enum: ['personal', 'group'],
+    required: true
+},
 });
 
 const Message = model('Message', messageSchema);
