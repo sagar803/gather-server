@@ -51,7 +51,6 @@ io.on("connection" , (socket)=> {
         console.log(data.userName, 'left room:',  data.room);
     })
     socket.on("send_message", async (data) => {
-        console.log(data)
         const newMessage = new Message({
             content : data.content, 
             senderId: data.senderId,
