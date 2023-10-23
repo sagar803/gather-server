@@ -51,16 +51,16 @@ io.on("connection" , (socket)=> {
         console.log(data.userName, 'left room:',  data.room);
     })
     socket.on("send_message", async (data) => {
-        console.log(data)
         const newMessage = new Message({
             content : data.content, 
             senderId: data.senderId,
             senderName: data.senderName, 
             roomId: data.roomId, 
-            type: 'text'
+            type: 'text',
+            chatType: data.chatType,
         })
         await newMessage.save();
-        socket.to(data.roomId).emit("recieve_message", data)
+        socket.to(data.roomId).emit("recieve_message", newMessage)
     })
     socket.on('disconnect', () => {
         console.log("User Disconnected:" , socket.id)

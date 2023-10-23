@@ -37,7 +37,8 @@ const messageSchema = new Schema({
   chatType: {
     type: String,
     enum: ['personal', 'group'],
-    required: true
+    required: true,
+    default: 'group'
 },
 });
 
