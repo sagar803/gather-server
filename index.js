@@ -11,6 +11,8 @@ import authRoutes from './routes/auth.js';
 import roomRoutes from './routes/room.js';
 import messageRoutes from './routes/message.js'
 import Message from './models/Message.js'
+import { chatRoom, communityRoom, trendingRooms } from './data/room.js'
+import Room from './models/Room.js'
 
 const app = express();
 dotenv.config();
@@ -71,6 +73,10 @@ mongoose.connect(process.env.MONGO_URL ,{
 }) 
 .then(() => {console.log('Connected to MongoDB')})
 .catch((error) => { console.error('Error connecting to MongoDB:', error) });
+
+//Room.insertMany(trendingRooms);
+//Room.insertMany(communityRoom);
+//Room.insertMany(chatRoom);
 
 const port = process.env.PORT || 3001;
 server.listen(port, ()=> {
